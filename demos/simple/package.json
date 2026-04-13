@@ -16,12 +16,9 @@
     "typecheck": "astro check"
   },
   "dependencies": {
-    "@astrojs/node": "catalog:",
+    "@astrojs/vercel": "^9.0.0",
     "@astrojs/react": "catalog:",
-    "@emdash-cms/plugin-audit-log": "workspace:*",
-    "@emdash-cms/plugin-color": "workspace:*",
     "astro": "catalog:",
-    "better-sqlite3": "catalog:",
     "emdash": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:"
