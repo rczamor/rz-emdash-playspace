@@ -4,6 +4,7 @@ packages:
   - demos/*
   - templates/*
   - packages/blocks/playground
+  - my_apps/*
   - e2e/fixture
   - docs
   - i18n
