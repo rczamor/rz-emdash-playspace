@@ -1,22 +1,12 @@
-import node from "@astrojs/node";
+import vercel from "@astrojs/vercel";
 import react from "@astrojs/react";
-import { auditLogPlugin } from "@emdash-cms/plugin-audit-log";
 import { defineConfig, fontProviders } from "astro/config";
 import emdash, { local } from "emdash/astro";
-import { sqlite } from "emdash/db";
+import { libsql } from "emdash/db";
 
 export default defineConfig({
 	output: "server",
-	adapter: node({
-		mode: "standalone",
-	}),
-	// Example: allowed domains for reverse proxy
-	// security: {
-	// 	allowedDomains: [
-	// 		{ hostname: "emdash.local", protocol: "http" },
-	// 		{ hostname: "emdash.local", protocol: "https" },
-	// 	],
-	// },
+	adapter: vercel(),
 	image: {
 		layout: "constrained",
 		responsiveStyles: true,
@@ -24,14 +14,14 @@ export default defineConfig({
 	integrations: [
 		react(),
 		emdash({
-			database: sqlite({ url: "file:./data.db" }),
+			database: libsql({
+				url: process.env.LIBSQL_DATABASE_URL || "file:./data.db",
+				authToken: process.env.LIBSQL_AUTH_TOKEN,
+			}),
 			storage: local({
 				directory: "./uploads",
 				baseUrl: "/_emdash/api/media/file",
 			}),
-			plugins: [auditLogPlugin()],
-			// HTTPS reverse proxy: uncomment so all origin-dependent features match browser
-			// siteUrl: "https://emdash.local:8443",
 		}),
 	],
 	fonts: [
@@ -51,10 +41,4 @@ export default defineConfig({
 		},
 	],
 	devToolbar: { enabled: false },
-	// Example: allowed hosts for reverse proxy
-	// vite: {
-	// 	server: {
-	// 		allowedHosts: ["emdash.local"],
-	// 	},
-	// },
 });
